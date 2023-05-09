@@ -1,5 +1,6 @@
 
 const allowedOrigins = [
+    'https://horse-friendly-bench.glitch.me',
     'https://final-project.mhbagwell.repl.co',
     'https://dazzling-snickerdoodle-777101.netlify.app',
     'http://127.0.0.1:5500',
