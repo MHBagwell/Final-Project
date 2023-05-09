@@ -5,7 +5,7 @@ const verifyStates = require('../../middleware/verifyStates');
 
 //set all routes
 router.route('/')
-    .get(verifyStates,statesController.getAllStates);
+    .get(statesController.getAllStates);
 
     router.route('/:state')
         .get(verifyStates, statesController.getState);
