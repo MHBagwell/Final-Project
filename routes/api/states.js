@@ -1,32 +1,32 @@
 const express = require('express');
 const router = express.Router();
 const statesController = require('../../controllers/statesController');
-
+const verifyStates = require('../../middleware/verifyStates');
 
 //set all routes
 router.route('/')
-    .get(statesController.getAllStates);
+    .get(verifyStates,statesController.getAllStates);
 
     router.route('/:state')
-        .get(statesController.getState);
+        .get(verifyStates, statesController.getState);
 
     router.route('/:state/funfact')
-        .get(statesController.getFunFact)
-        .post(statesController.postFunFact)
-        .patch(statesController.patchFunFact)
-        .delete(statesController.deleteFunFact);
+        .get(verifyStates, statesController.getFunFact)
+        .post(verifyStates, statesController.postFunFact)
+        .patch(verifyStates, statesController.patchFunFact)
+        .delete(verifyStates, statesController.deleteFunFact);
 
     router.route('/:state/capital')
-        .get(statesController.getCapital);
+        .get(verifyStates,statesController.getCapital);
 
     router.route('/:state/nickname')
-        .get(statesController.getNickname);
+        .get(verifyStates, statesController.getNickname);
 
     router.route('/:state/population')
-        .get(statesController.getPopulation);
+        .get(verifyStates, statesController.getPopulation);
         
     router.route('/:state/admission')
-        .get(statesController.getAdmission);
+        .get(verifyStates,statesController.getAdmission);
 
 
 module.exports = router;
