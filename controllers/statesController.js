@@ -140,41 +140,42 @@ const postFunFact = async (req, res) => {
 //PATCH Request Functions 
 const patchFunFact = async (req, res) => {
     if (!req.body.index) {
-        return res.status(400).json({ "message": "State fun fact index value required" });
+      return res.status(400).json({ "message": "State fun fact index value required" });
     }
     if (!req.body.funfact || req.body.funfact instanceof Array) {
-        return res.status(400).json({ "message": "State fun fact value required" });
+      return res.status(400).json({ "message": "State fun fact value required" });
     }
-
+  
     const index = parseInt(req.body.index) - 1;
     const stateCode = req.params.state;
     const stateData = statesData.find(state => state.code === stateCode);
     const stateName = stateData.state;
     const funfact = req.body.funfact;
     const foundState = await State.findOne({ stateCode: stateCode });
-
+  
     if (!foundState) {
-        return res.status(400).json({ "message": `No State found with code ${stateCode}` });
+      return res.status(400).json({ "message": `No State found with code ${stateCode}` });
     }
-
+  
     let funfactArray = foundState.funfacts;
-
+  
     if (!funfactArray || !funfactArray.length) {
-        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
+      return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
     }
-
-    if (funfactArray[index] === null) {
-        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
-      }
-
+  
     if (!funfactArray[index]) {
-        return res.status(400).json({ "message": `No Fun Fact found at that index for ${stateName}` });
+      return res.status(400).json({ "message": `No Fun Fact found at that index for ${stateName}` });
     }
-
+  
+    if (funfactArray[index] === null) {
+      return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
+    }
+  
     funfactArray[index] = funfact;
     const result = await foundState.save();
     res.status(201).json(result);
-}
+  }
+  
 
 
 
