@@ -156,6 +156,10 @@ const patchFunFact = async (req, res) => {
     if (!foundState) {
       return res.status(400).json({ "message": `No State found with code ${stateCode}` });
     }
+
+    if (funfactArray === null) {
+        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
+      }
   
     let funfactArray = foundState.funfacts;
   
@@ -166,11 +170,7 @@ const patchFunFact = async (req, res) => {
     if (!funfactArray[index]) {
       return res.status(400).json({ "message": `No Fun Fact found at that index for ${stateName}` });
     }
-  
-    if (funfactArray[index] === null) {
-      return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
-    }
-  
+    
     funfactArray[index] = funfact;
     const result = await foundState.save();
     res.status(201).json(result);
