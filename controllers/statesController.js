@@ -49,11 +49,12 @@ const getFunFact = async (req, res) => {
     const stateData = statesData.find(state => state.code === stateReq);   
     const mongoStates = await State.find();
     const stateExists = mongoStates.find(st => st.stateCode === stateData.code);
-    let funfactArray = stateExists.funfacts;
-
-    if (funfactArray === []) {
-         return res.json({ "message": `No Fun Facts found for ${stateData.state}`});
+    
+    if (!stateExists || !stateExists.funfacts) {
+        return res.json({ "message": `No Fun Facts found for ${stateData.state}` });
     }
+
+    const funfactArray = stateExists.funfacts;
     
     let randomNum = Math.floor(Math.random()*funfactArray.length);
     let funfact = funfactArray[randomNum];
