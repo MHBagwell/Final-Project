@@ -152,7 +152,7 @@ const patchFunFact = async (req, res) => {
     const stateName = stateData.state;
     const funfact = req.body.funfact;
     const foundState = await State.findOne({stateCode: stateCode});
-    
+
     if(!foundState) {
         return res.status(400).json({"message": `No State found with code ${stateCode}`});
     }
@@ -170,6 +170,7 @@ const patchFunFact = async (req, res) => {
     const result = await foundState.save();
     res.status(201).json(result);
 }
+
 
 
 //DELETE Request Functions 
@@ -196,6 +197,7 @@ const deleteFunFact = async (req, res) => {
     const result = await foundState.save();
     res.status(201).json(result); 
 }
+
 
 
 module.exports = {
