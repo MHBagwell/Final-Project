@@ -152,9 +152,14 @@ const patchFunFact = async (req, res) => {
     const stateName = stateData.state;
     const funfact = req.body.funfact;
     const foundState = await State.findOne({stateCode: stateCode});
+    
+    if(!foundState) {
+        return res.status(400).json({"message": `No State found with code ${stateCode}`});
+    }
+
     let funfactArray = foundState.funfacts;
 
-    if(!funfactArray.length) {
+    if(!funfactArray || !funfactArray.length) {
         return res.status(400).json({"message": `No Fun Facts found for ${stateName}`});
     }
     if(!funfactArray[index]) {
@@ -180,7 +185,7 @@ const deleteFunFact = async (req, res) => {
     const foundState = await State.findOne({stateCode: stateCode});
     let funfactArray = foundState.funfacts;
 
-    if(!funfactArray.length) {
+    if(!funfactArray || !funfactArray.length) {
         return res.status(400).json({"message": `No Fun Facts found for ${stateName}`});
     }
     if(!funfactArray[index]) {
