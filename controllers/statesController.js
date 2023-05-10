@@ -153,8 +153,8 @@ const patchFunFact = async (req, res) => {
     const funfact = req.body.funfact;
     const foundState = await State.findOne({ stateCode: stateCode });
 
-    if (!foundState) {
-        return res.status(400).json({ "message": `No State found with code ${stateCode}` });
+    if (!foundState || !foundState.funfacts) {
+        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
     }
 
     let funfactArray = foundState.funfacts;
@@ -167,17 +167,10 @@ const patchFunFact = async (req, res) => {
         return res.status(400).json({ "message": `No Fun Fact found at that index for ${stateName}` });
     }
 
-    if (!funfact) {
-        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
-    }
-
     funfactArray[index] = funfact;
     const result = await foundState.save();
     res.status(201).json(result);
 }
-
-  
-
 
 
 //DELETE Request Functions 
@@ -191,6 +184,11 @@ const deleteFunFact = async (req, res) => {
     const stateData = statesData.find(state => state.code === stateCode);
     const stateName = stateData.state;
     const foundState = await State.findOne({stateCode: stateCode});
+
+    if (!foundState || !foundState.funfacts) {
+        return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
+    }
+
     let funfactArray = foundState.funfacts;
 
     if(!funfactArray || !funfactArray.length) {
@@ -204,8 +202,6 @@ const deleteFunFact = async (req, res) => {
     const result = await foundState.save();
     res.status(201).json(result); 
 }
-
-
 
 module.exports = {
     getAllStates, 
