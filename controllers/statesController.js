@@ -1,19 +1,18 @@
 //Imported Data
-const { json } = require('express/lib/response'); 
 const State = require('../model/States');
-const statesJSONData = require('../model/statesData.json');
+const statesData = require('../model/statesData.json');
 
 //GET Request Functions 
 const getAllStates = async (req, res) => {
     const { contig } = req.query;
-    let statesList = statesJSONData;
+    let statesList = statesData;
 
     if (contig === 'false') {
-        statesList = statesJSONData.filter(st => st.code === 'AK' || st.code === 'HI');
+        statesList = statesData.filter(st => st.code === 'AK' || st.code === 'HI');
         return res.json(statesList);
     }
     if (contig === 'true') {
-        statesList = statesJSONData.filter(st => st.admission_number < 49);
+        statesList = statesData.filter(st => st.admission_number < 49);
         return res.json(statesList);
     }
     
@@ -32,7 +31,7 @@ const getAllStates = async (req, res) => {
 
 const getState = async (req, res) => {    
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);
+    const stateData = statesData.find(state => state.code === stateReq);
     const mongoStates = await State.find();   
     const stateExists = mongoStates.find(st => st.stateCode === stateData.code);
     
@@ -47,12 +46,12 @@ const getState = async (req, res) => {
 
 const getFunFact = async (req, res) => {
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);   
+    const stateData = statesData.find(state => state.code === stateReq);   
     const mongoStates = await State.find();
     const stateExists = mongoStates.find(st => st.stateCode === stateData.code);
-    const funfactArray = stateExists.funfacts;
+    let funfactArray = stateExists.funfacts;
 
-    if (!funfactArray.length) {
+    if (funfactArray === []) {
          return res.json({ "message": `No Fun Facts found for ${stateData.state}`});
     }
     
@@ -64,7 +63,7 @@ const getFunFact = async (req, res) => {
 
 const getCapital = (req, res) => {
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);
+    const stateData = statesData.find(state => state.code === stateReq);
     const state = stateData.state;
     const capital = stateData.capital_city;
 
@@ -73,7 +72,7 @@ const getCapital = (req, res) => {
 
 const getNickname = (req, res) => {
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);
+    const stateData = statesData.find(state => state.code === stateReq);
     const state = stateData.state;
     const nickname = stateData.nickname;
 
@@ -82,7 +81,7 @@ const getNickname = (req, res) => {
 
 const getPopulation = (req, res) => {
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);
+    const stateData = statesData.find(state => state.code === stateReq);
     const state = stateData.state;
     const popInt = stateData.population;
     const population = popInt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -92,7 +91,7 @@ const getPopulation = (req, res) => {
 
 const getAdmission = (req, res) => {
     const stateReq = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateReq);
+    const stateData = statesData.find(state => state.code === stateReq);
     const state = stateData.state;
     const admitted = stateData.admission_date;
 
@@ -148,7 +147,7 @@ const patchFunFact = async (req, res) => {
 
     const index = parseInt(req.body.index) - 1; 
     const stateCode = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateCode);
+    const stateData = statesData.find(state => state.code === stateCode);
     const stateName = stateData.state;
     const funfact = req.body.funfact;
     const foundState = await State.findOne({stateCode: stateCode});
@@ -175,7 +174,7 @@ const deleteFunFact = async (req, res) => {
     
     const index = parseInt(req.body.index) - 1;
     const stateCode = req.params.state;
-    const stateData = statesJSONData.find(state => state.code === stateCode);
+    const stateData = statesData.find(state => state.code === stateCode);
     const stateName = stateData.state;
     const foundState = await State.findOne({stateCode: stateCode});
     let funfactArray = foundState.funfacts;
