@@ -157,11 +157,11 @@ const patchFunFact = async (req, res) => {
       return res.status(400).json({ "message": `No State found with code ${stateCode}` });
     }
 
+    let funfactArray = foundState.funfacts;
+
     if (funfactArray[index] === null) {
       return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
     }
-  
-    let funfactArray = foundState.funfacts;
   
     if (!funfactArray || !funfactArray.length) {
       return res.status(400).json({ "message": `No Fun Facts found for ${stateName}` });
